@@ -47,30 +47,23 @@ movie_genres_df = df[df['Content Type']== 'Movie']
 movie_genres_df = (movie_genres_df['Genres'].str.split(',', expand=True)
             .stack()
             .to_frame(name='Genres'))
-#movie_genres_df.index = movie_genres_df.index.droplevel(1)
+movie_genres_df['Genres'] = (movie_genres_df['Genres'].str.strip())
+movie_genres_df.index = movie_genres_df.index.droplevel(1)
+movie_genres_df = movie_genres_df.join(df['Imdb Score'])
+movie_genres_df = movie_genres_df.groupby('Genres').mean().sort_values(by='Imdb Score')
+movie_genres_df.plot(kind='barh', figsize=(10,20))
 
-((movie_genres_df.join(df['Imdb Score']).groupby('Genres')
-       .mean())
-       .sort_values(by='Imdb Score')
-       .plot(kind='barh', figsize=(10,20)))
-
-
-
-
-
-tv_genres_df = df[df['Content Type']== 'TV Show']
-tv_genres_df = (tv_genres_df['Genres'].str.split(',', expand=True)
+# This will split up the multiple genres in the tv show Content Type and create a bar graph
+# based on imdb score
+tv_genres_df = (df['Genres'].str.split(',', expand=True)
             .stack()
-            .to_frame(name='Genre'))
-
+            .to_frame(name='Genres'))
+tv_genres_df['Genres'] = (tv_genres_df['Genres'].str.strip())
 tv_genres_df.index = tv_genres_df.index.droplevel(1)
-tv_genres_df
-
-((tv_genres_df.join(df['Imdb Score'])
-       .groupby('Genre')
-       .mean())
-       .sort_values(by='Imdb Score')
-       .plot(kind='barh', figsize=(10,20)))
+tv_genres_df = tv_genres_df.join(df.loc[:,['Imdb Score','Content Type']])
+tv_genres_df = tv_genres_df[df['Content Type'] == 'TV Show']
+tv_genres_df = tv_genres_df.groupby('Genres').mean().sort_values(by='Imdb Score')
+tv_genres_df.plot(kind='barh', figsize=(10,20))
 
 
 
