@@ -9,6 +9,11 @@ df.info()
 # shows the release dates description stats
 df.describe().T.style.bar()
 
+
+# changing the release dates from float to int
+df['Release Date'] = df['Release Date'].astype('Int64')
+
+
 # adding each column of the data's null values and showing percentages
 null_values = df.isnull().sum()
 null_values
@@ -65,49 +70,30 @@ tv_genres_df = tv_genres_df[df['Content Type'] == 'TV Show']
 tv_genres_df = tv_genres_df.groupby('Genres').mean().sort_values(by='Imdb Score')
 tv_genres_df.plot(kind='barh', figsize=(10,20))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-movie_ratings = df[df['Content Type'] == 'Movie'].groupby('Date added')['averageRating'].mean()
-
-
-
-
-
-
-
-
-
-movies_imdb = df.groupby(df['Content Type' == 'Movies'])
-movies_imdb = pd.DataFrame(movies_imdb)
-movies_imdb.describe()
-
 df.head()
 
 
+production_df_mean = df.loc[:,['Production Country', 'Imdb Score']].groupby('Production Country').mean()
+production_df_mean = production_df_mean.sort_values(by='Imdb Score', ascending=False).iloc[:10]
+production_df_mean = production_df_mean.sort_values(by='Imdb Score', ascending=True)
+production_df_mean.plot(kind='barh', figsize=(10,20), title='Production Location Top 10 Imdb Scores Mean')
+
+production_df_count = df.loc[:,['Production Country', 'Imdb Score']].groupby('Production Country').count()
+production_df_count = production_df_count.sort_values(by='Imdb Score', ascending=False).iloc[:10]
+production_df_count= production_df_count.sort_values(by='Imdb Score', ascending=True)
+production_df_count.plot(kind='barh', figsize=(10,20), title='Top 10 Number of Production Locations of TV Shows and Movies')
 
 
+production_df = df.loc[:,['Release Date', 'Imdb Score']].groupby('Release Date').mean()
+production_df = production_df.sort_values(by='Imdb Score', ascending=False).iloc[:10]
+production_df = production_df.sort_values(by='Imdb Score', ascending=True)
+production_df.plot(kind='barh', figsize=(10,20), title='Release Year Top 10 Imdb Scores Mean')
+production_df
+
+production_df = df.loc[:,['Release Date', 'Imdb Score']].groupby('Release Date').count()
+production_df = production_df.sort_values(by='Imdb Score', ascending=False).iloc[:10]
+production_df = production_df.sort_values(by='Imdb Score', ascending=True)
+production_df.plot(kind='barh', figsize=(10,20), title='Top 10 Highest Number of tv shows and movies produced')
 
 
 
