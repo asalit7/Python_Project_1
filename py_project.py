@@ -1,3 +1,4 @@
+# Alec Salit
 import numpy as np 
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -44,7 +45,7 @@ Content_imdb.plot(kind='pie', legend=True, explode=(0, 0.1),
 
 
 # This chunk of code will apply a dataframe from the movie content type and split the genres
-# afterwards I stack the genres and use the mean imdb scores to plot this on a bar cahrt
+# afterwards I stack the genres and use the mean imdb scores to plot this on a bar chart
 movie_genres_df = df[df['Content Type']== 'Movie']
 movie_genres_df = (movie_genres_df['Genres'].str.split(',', expand=True)
             .stack()
@@ -53,7 +54,7 @@ movie_genres_df['Genres'] = (movie_genres_df['Genres'].str.strip())
 movie_genres_df.index = movie_genres_df.index.droplevel(1)
 movie_genres_df = movie_genres_df.join(df['Imdb Score'])
 movie_genres_df = movie_genres_df.groupby('Genres').mean().sort_values(by='Imdb Score')
-movie_genres_df.plot(kind='barh', figsize=(10,20))
+movie_genres_df.plot(kind='barh', figsize=(10,20), title='Top Genres for IMDb Scores in Movies')
 
 # This will split up the multiple genres in the tv show Content Type and create a bar graph
 # based on imdb score
@@ -65,11 +66,11 @@ tv_genres_df.index = tv_genres_df.index.droplevel(1)
 tv_genres_df = tv_genres_df.join(df.loc[:,['Imdb Score','Content Type']])
 tv_genres_df = tv_genres_df[df['Content Type'] == 'TV Show']
 tv_genres_df = tv_genres_df.groupby('Genres').mean().sort_values(by='Imdb Score')
-tv_genres_df.plot(kind='barh', figsize=(10,20))
+tv_genres_df.plot(kind='barh', figsize=(10,20), title='Top Genres for IMDb Scores in TV Shows', color = 'Purple')
 
 # Calculating the production country locations means in respect to imdb score
 production_df_mean = df.loc[:,['Production Country', 'Imdb Score']].groupby('Production Country').mean()
-production_df_mean = production_df_mean.sort_values(by='Imdb Score', ascending=False).iloc[-1:-5]
+production_df_mean = production_df_mean.sort_values(by='Imdb Score', ascending=False).iloc[:10]
 production_df_mean = production_df_mean.sort_values(by='Imdb Score', ascending=True)
 production_df_mean.plot(kind='barh', figsize=(10,20), title='Top 10 Number of Production Location Means')
 
