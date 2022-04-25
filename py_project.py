@@ -1,7 +1,6 @@
 import numpy as np 
 import pandas as pd
 from matplotlib import pyplot as plt
-import seaborn as sns
 
 
 df = pd.read_csv("netflixData.csv")
@@ -9,10 +8,8 @@ df.info()
 # shows the release dates description stats
 df.describe().T.style.bar()
 
-
 # changing the release dates from float to int
 df['Release Date'] = df['Release Date'].astype('Int64')
-
 
 # adding each column of the data's null values and showing percentages
 null_values = df.isnull().sum()
@@ -28,7 +25,7 @@ df['Title'] = df['Title'].str.replace('#', '')
 # showing the difference between Movies and TV shows 
 contentType_count = df['Content Type'].value_counts()
 contentType_count.plot(kind='pie', legend=True, explode=(0, 0.1), 
-                        title = "Comparison of TV Shows vs Movies", colors=["blue", "yellow"],
+                        title = "Comparison of TV Shows vs Movies", colors=["yellow", "red"],
                         figsize=(10,20))
 
 # changing imdb scores to numeric 
@@ -70,30 +67,30 @@ tv_genres_df = tv_genres_df[df['Content Type'] == 'TV Show']
 tv_genres_df = tv_genres_df.groupby('Genres').mean().sort_values(by='Imdb Score')
 tv_genres_df.plot(kind='barh', figsize=(10,20))
 
-df.head()
-
-
+# Calculating the production country locations means in respect to imdb score
 production_df_mean = df.loc[:,['Production Country', 'Imdb Score']].groupby('Production Country').mean()
-production_df_mean = production_df_mean.sort_values(by='Imdb Score', ascending=False).iloc[:10]
+production_df_mean = production_df_mean.sort_values(by='Imdb Score', ascending=False).iloc[-1:-5]
 production_df_mean = production_df_mean.sort_values(by='Imdb Score', ascending=True)
-production_df_mean.plot(kind='barh', figsize=(10,20), title='Production Location Top 10 Imdb Scores Mean')
+production_df_mean.plot(kind='barh', figsize=(10,20), title='Top 10 Number of Production Location Means')
 
+# Calculating the production country locations counts
 production_df_count = df.loc[:,['Production Country', 'Imdb Score']].groupby('Production Country').count()
 production_df_count = production_df_count.sort_values(by='Imdb Score', ascending=False).iloc[:10]
 production_df_count= production_df_count.sort_values(by='Imdb Score', ascending=True)
-production_df_count.plot(kind='barh', figsize=(10,20), title='Top 10 Number of Production Locations of TV Shows and Movies')
+production_df_count.plot(kind='barh', figsize=(10,20), title='Top 10 Number of Production Locations of TV Shows and Movies', color='red')
 
 
-production_df = df.loc[:,['Release Date', 'Imdb Score']].groupby('Release Date').mean()
-production_df = production_df.sort_values(by='Imdb Score', ascending=False).iloc[:10]
-production_df = production_df.sort_values(by='Imdb Score', ascending=True)
-production_df.plot(kind='barh', figsize=(10,20), title='Release Year Top 10 Imdb Scores Mean')
-production_df
+# Calculating the Release Date means in respect to imdb score
+release_mean = df.loc[:,['Release Date', 'Imdb Score']].groupby('Release Date').mean()
+release_mean = release_mean.sort_values(by='Imdb Score', ascending=False).iloc[:10]
+release_mean = release_mean.sort_values(by='Imdb Score', ascending=True)
+release_mean.plot(kind='barh', figsize=(10,20), title='Top 10 Means Based on Release Dates')
 
-production_df = df.loc[:,['Release Date', 'Imdb Score']].groupby('Release Date').count()
-production_df = production_df.sort_values(by='Imdb Score', ascending=False).iloc[:10]
-production_df = production_df.sort_values(by='Imdb Score', ascending=True)
-production_df.plot(kind='barh', figsize=(10,20), title='Top 10 Highest Number of tv shows and movies produced')
+# Calculating the Release Date count 
+release_count = df.loc[:,['Release Date', 'Imdb Score']].groupby('Release Date').count()
+release_count = release_count.sort_values(by='Imdb Score', ascending=False).iloc[:10]
+release_count = release_count.sort_values(by='Imdb Score', ascending=True)
+release_count.plot(kind='barh', figsize=(10,20), title='Top 10 Highest Number of Release Dates', color='red')
 
 
 
