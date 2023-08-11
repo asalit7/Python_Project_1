@@ -20,6 +20,8 @@ perc = (null_values / df.isnull().count()).sort_values(ascending=False)
 total = pd.concat([total_null, perc], axis=1, keys=['Total null values', 'Percentages of null values'])
 total.T.style.bar()
 
+
+
 # Getting rid of hashtags involved with titles
 df['Title'] = df['Title'].str.replace('#', '')
 
