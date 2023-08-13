@@ -13,7 +13,6 @@ df['Release Date'] = df['Release Date'].astype('Int64')
 
 # adding each column of the data's null values and showing percentages
 null_values = df.isnull().sum()
-null_values
 total_null = null_values.sort_values(ascending=False)
 perc = (null_values / df.isnull().count()).sort_values(ascending=False)
 total = pd.concat([total_null, perc], axis=1, keys=['Total null values', 'Percentages of null values'])
@@ -33,11 +32,9 @@ contentType_count.plot(kind='pie', legend=True, explode=(0, 0.1),
 # changing imdb scores to numeric 
 df['Imdb Score'] = df['Imdb Score'].str.replace('/10', '')
 df['Imdb Score'] = df['Imdb Score'].apply(pd.to_numeric)
-df['Imdb Score']
 
 # create dataframe looking at mean of TV Shows vs Movies
 Content_imdb = pd.DataFrame(df.groupby('Content Type')['Imdb Score'].mean()).sort_values(ascending=False, by='Imdb Score')
-Content_imdb
 
 #Create a pie chart looking at 
 Content_imdb.plot(kind='pie', legend=True, explode=(0, 0.1), 
