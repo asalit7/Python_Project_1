@@ -13,7 +13,7 @@ df['Release Date'] = df['Release Date'].astype('Int64')
 
 # adding each column of the data's null values and showing percentages
 null_values = df.isnull().sum()
-total_null = null_values.sort_values(ascending=False)
+total_null = null_values.sort_values(ascending=False).astype('Int64')
 perc = (null_values / df.isnull().count()).sort_values(ascending=False)
 total = pd.concat([total_null, perc], axis=1, keys=['Total null values', 'Percentages of null values'])
 total.T.style.bar()
