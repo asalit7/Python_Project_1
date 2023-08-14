@@ -4,9 +4,6 @@ from matplotlib import pyplot as plt
 
 
 df = pd.read_csv("netflixData.csv")
-df.info()
-# shows the release dates description stats
-df.describe().T.style.bar()
 
 # changing the release dates from float to int
 df['Release Date'] = df['Release Date'].astype('Int64')
@@ -16,7 +13,6 @@ null_values = df.isnull().sum()
 total_null = null_values.sort_values(ascending=False).astype('Int64')
 perc = (null_values / df.isnull().count()).sort_values(ascending=False)
 total = pd.concat([total_null, perc], axis=1, keys=['Total null values', 'Percentages of null values'])
-total.T.style.bar()
 
 # Getting rid of hashtags involved with titles
 df['Title'] = df['Title'].str.replace('#', '')
@@ -24,6 +20,10 @@ df['Title'] = df['Title'].str.replace('#', '')
 # Changing imdb scores to numeric 
 df['Imdb Score'] = df['Imdb Score'].str.replace('/10', '')
 df['Imdb Score'] = df['Imdb Score'].apply(pd.to_numeric)
+
+df.info()
+# shows the release dates description stats
+df.describe().T.style.bar()
 
 # Create dataframe looking at mean of TV Shows vs Movies
 Content_imdb = pd.DataFrame(df.groupby('Content Type')['Imdb Score'].mean()).sort_values(ascending=False, by='Imdb Score')
