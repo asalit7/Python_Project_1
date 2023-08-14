@@ -18,32 +18,29 @@ perc = (null_values / df.isnull().count()).sort_values(ascending=False)
 total = pd.concat([total_null, perc], axis=1, keys=['Total null values', 'Percentages of null values'])
 total.T.style.bar()
 
-x = "test"
-
 # Getting rid of hashtags involved with titles
 df['Title'] = df['Title'].str.replace('#', '')
 
-# showing the difference between Movies and TV shows 
-contentType_count = df['Content Type'].value_counts()
-contentType_count.plot(kind='pie', legend=True, explode=(0, 0.1), 
-                        title = "Comparison of TV Shows vs Movies", colors=["yellow", "red"],
-                        figsize=(10,20))
-
-# changing imdb scores to numeric 
+# Changing imdb scores to numeric 
 df['Imdb Score'] = df['Imdb Score'].str.replace('/10', '')
 df['Imdb Score'] = df['Imdb Score'].apply(pd.to_numeric)
 
-# create dataframe looking at mean of TV Shows vs Movies
+# Create dataframe looking at mean of TV Shows vs Movies
 Content_imdb = pd.DataFrame(df.groupby('Content Type')['Imdb Score'].mean()).sort_values(ascending=False, by='Imdb Score')
 
-#Create a pie chart looking at 
+# Create a pie chart looking at 
 Content_imdb.plot(kind='pie', legend=True, explode=(0, 0.1), 
                         title = "Comparison of TV Shows vs Movies", colors=["red", "yellow"],
                         figsize=(10,20), subplots=True)
 
+# Showing the difference between Movies and TV shows 
+contentType_count = df['Content Type'].value_counts()
+contentType_count.plot(kind='pie', legend=True, explode=(0, 0.1), 
+                        title = "Comparison of TV Shows vs Movies",
+                        figsize=(10,20))
 
-# This chunk of code will apply a dataframe from the movie content type and split the genres
-# afterwards I stack the genres and use the mean imdb scores to plot this on a bar chart
+# This code will apply a dataframe from the movie content type and split the genres
+# stack the genres and use the mean imdb scores to plot this on a bar chart
 movie_genres_df = df[df['Content Type']== 'Movie']
 movie_genres_df = (movie_genres_df['Genres'].str.split(',', expand=True)
             .stack()
