@@ -21,14 +21,25 @@ df['Title'] = df['Title'].str.replace('#', '')
 df['Imdb Score'] = df['Imdb Score'].str.replace('/10', '')
 df['Imdb Score'] = df['Imdb Score'].apply(pd.to_numeric)
 
+# Changed text of date to a datetime format
+df['Date Added'] = pd.to_datetime(df['Date Added'])
+
+# Creating a year column
+df['Year'] = df['Date Added'].dt.year
+
 df.info()
 # shows the release dates description stats
 df.describe().T.style.bar()
 
-# Create dataframe looking at mean of TV Shows vs Movies
-Content_imdb = pd.DataFrame(df.groupby('Content Type')['Imdb Score'].mean()).sort_values(ascending=False, by='Imdb Score')
+df.head()
 
+
+
+# Create dataframe looking at mean of TV Shows vs Movies
+Content_imdb = pd.DataFrame(df.groupby('Content Type')['Imdb Score'].mean() ).sort_values(ascending=False, by='Imdb Score')
+Content_imdb
 # Create a pie chart looking at 
+
 Content_imdb.plot(kind='pie', legend=True, explode=(0, 0.1), 
                         title = "Comparison of TV Shows vs Movies", colors=["red", "yellow"],
                         figsize=(10,20), subplots=True)
