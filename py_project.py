@@ -34,8 +34,10 @@ df.describe().T.style.bar()
 df.head()
 
 # Viewing Imdb overall in context to years
-year_imdb = pd.DataFrame(df.groupby('Year')['Imdb Score'].mean()).sort_values(ascending=False, by='Year')
+year_imdb = pd.DataFrame(df.groupby('Year')['Imdb Score'].mean()).sort_values(by='Year')
 year_imdb
+
+year_imdb.plot(kind='bar', title = 'Imdb Scores Over the Years')
 
 # Create dataframe looking at mean of TV Shows vs Movies
 Content_imdb = pd.DataFrame(df.groupby('Content Type')['Imdb Score'].mean() ).sort_values(ascending=False, by='Imdb Score')
