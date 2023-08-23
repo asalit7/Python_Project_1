@@ -1,7 +1,7 @@
 import numpy as np 
 import pandas as pd
 from matplotlib import pyplot as plt
-
+import plotly.express as px
 
 df = pd.read_csv("netflixData.csv")
 
@@ -37,7 +37,7 @@ df.head()
 year_imdb = pd.DataFrame(df.groupby('Year')['Imdb Score'].mean()).sort_values(by='Year')
 year_imdb
 
-year_imdb.plot(kind='bar', title = 'Imdb Scores Over the Years')
+year_imdb.plot(kind='line', legend=True, title = 'Imdb Scores over the Years')
 
 # Create dataframe looking at mean of TV Shows vs Movies
 Content_imdb = pd.DataFrame(df.groupby('Content Type')['Imdb Score'].mean() ).sort_values(ascending=False, by='Imdb Score')
