@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 import plotly.express as px
+import seaborn as sns
 
 df = pd.read_csv("netflixData.csv")
 
@@ -27,17 +28,26 @@ df['Date Added'] = pd.to_datetime(df['Date Added'])
 # Creating a year column
 df['Year'] = df['Date Added'].dt.year.astype('Int64')
 
+df['Genres']
+genre = {}
+z=0
+
+    
+
+
 df.info()
 # shows the release dates description stats
 df.describe().T.style.bar()
 
 df.head()
-
+df[['Content Type']]
 # Viewing Imdb overall in context to years
 year_imdb = pd.DataFrame(df.groupby('Year')['Imdb Score'].mean()).sort_values(by='Year')
 year_imdb
 
-year_imdb.plot(kind='line', legend=True, title = 'Imdb Scores over the Years')
+sns.lineplot(data=year_imdb')
+
+year_imdb.plot(kind='line', legend=True, title = 'Imdb Scores over the Years', color='Content Type')
 
 # Create dataframe looking at mean of TV Shows vs Movies
 Content_imdb = pd.DataFrame(df.groupby('Content Type')['Imdb Score'].mean() ).sort_values(ascending=False, by='Imdb Score')
