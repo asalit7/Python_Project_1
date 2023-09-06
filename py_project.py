@@ -30,9 +30,15 @@ df['Year'] = df['Date Added'].dt.year.astype('Int64')
 
 df['Genres']
 genre = {}
-z=0
 
-    
+
+for x in df['Genres']:
+    print(x)
+    if x in genre:
+        genre[x]+=1
+    else:
+        genre[x]=0
+print(genre)
 
 
 df.info()
